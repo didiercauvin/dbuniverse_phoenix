@@ -1,0 +1,2 @@
+<h1><%= @character["name"] %></h1>
+<h3><%= @character["description"] %></h3>
