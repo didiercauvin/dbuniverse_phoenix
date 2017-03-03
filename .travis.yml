@@ -1,1 +1,3 @@
+services:
+  - couchdb
 language: elixir
