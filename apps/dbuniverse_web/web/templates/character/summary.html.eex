@@ -1,0 +1,10 @@
+<a href='characters/<%= @character["_id"] %>'>
+    <div class="list-group-item">
+        <h4 class="list-group-item-heading">
+            <%= @character["name"] %>
+        </h4>
+        <span>
+            <%= @character["description"] %>
+        </span>
+    </div>
+</a>

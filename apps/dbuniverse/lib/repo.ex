@@ -3,6 +3,7 @@ defmodule Dbuniverse.Repo do
     alias Couchdb.Connector.Storage
     alias Couchdb.Connector.Writer
     alias Couchdb.Connector.Reader
+    alias Couchdb.Connector.View
 
     @database_properties %{
         protocol: Application.get_env(:couchdb_connector, :protocol),
@@ -61,6 +62,15 @@ defmodule Dbuniverse.Repo do
         {:ok, character_json} = Reader.get @database_properties, id
         character_json |> Poison.Parser.parse!
 
+    end
+
+    def get_all do
+        {:ok, characters_json} = View.fetch_all @database_properties, "character", "by_name"
+        characters_json |> Poison.Parser.parse!
+    end
+
+    def create_view design_name, code do
+        View.create_view @database_properties, design_name, code
     end
 
 end

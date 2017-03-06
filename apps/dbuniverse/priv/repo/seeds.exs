@@ -6,6 +6,7 @@ Repo.drop_database
 case Repo.create_database do
 
     {:error, body} -> 
+        IO.puts "Database could not be created. An error occured:"
         IO.puts body
     {:ok, _} ->
         yamcha = Poison.encode! %Character{
@@ -25,5 +26,10 @@ case Repo.create_database do
         }
 
         Repo.insert songoku
+
+        by_name_code = File.read! "priv/repo/views/character_by_name.json"
+        Repo.create_view "character", by_name_code
+
+        IO.puts "Database has been seeded successfully"
 
 end

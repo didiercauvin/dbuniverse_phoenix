@@ -11,4 +11,9 @@ defmodule DbuniverseWeb.CharacterController do
 
     end
 
+    def list(conn, _params) do
+        characters = Dbuniverse.Repo.get_all
+        render conn, "list.html", characters: characters
+    end
+
 end
