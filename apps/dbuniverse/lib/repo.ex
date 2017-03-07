@@ -53,7 +53,9 @@ defmodule Dbuniverse.Repo do
     
     def insert document do
 
-        Writer.create_generate @database_properties, document
+        {:ok, json, _headers} = Writer.create_generate @database_properties, document
+        IO.puts "document inserted"
+        json |> Poison.Parser.parse!
 
     end
 

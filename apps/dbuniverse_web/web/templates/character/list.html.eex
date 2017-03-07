@@ -1,6 +1,6 @@
 <h1>All characters</h1>
 <div class="list-group">
     <%= for c <- @characters["rows"] do %>
-        <%= render "summary.html", character: c["value"] %>
+        <%= render "summary.html", character: c["value"], conn: @conn %>
     <% end %>
 </div>
