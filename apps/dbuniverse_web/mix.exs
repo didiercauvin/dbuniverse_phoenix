@@ -21,7 +21,7 @@ defmodule DbuniverseWeb.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {DbuniverseWeb, []},
-     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext, :dbuniverse]]
+     applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :phoenix_ecto, :cowboy, :logger, :gettext, :dbuniverse]]
   end
 
   # Specifies which paths to compile per environment.
@@ -36,6 +36,7 @@ defmodule DbuniverseWeb.Mixfile do
      {:phoenix_pubsub, "~> 1.0"},
      {:phoenix_html, "~> 2.6"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:phoenix_ecto, "~> 3.2"},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:dbuniverse, in_umbrella: true}]

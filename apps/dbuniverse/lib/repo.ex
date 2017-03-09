@@ -59,6 +59,13 @@ defmodule Dbuniverse.Repo do
 
     end
 
+    def update document, id do
+
+        IO.inspect Poison.encode!(document)
+        IO.inspect Writer.update @database_properties, Poison.encode!(document), id
+
+    end
+
     def get_by_id id do
         
         {:ok, character_json} = Reader.get @database_properties, id
@@ -67,12 +74,16 @@ defmodule Dbuniverse.Repo do
     end
 
     def get_all do
+
         {:ok, characters_json} = View.fetch_all @database_properties, "character", "by_name"
         characters_json |> Poison.Parser.parse!
+
     end
 
     def create_view design_name, code do
+
         View.create_view @database_properties, design_name, code
+
     end
 
 end

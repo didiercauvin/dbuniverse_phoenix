@@ -1,8 +1,7 @@
 <h1>All characters</h1>
-ss
-<a href="<%= character_path(@conn, :create) %>" class="btn btn-primary pull-right">Add character</a>
 <div class="list-group">
     <%= for c <- @characters["rows"] do %>
         <%= render "summary.html", character: c["value"], conn: @conn %>
     <% end %>
 </div>
+<a href="<%= character_path(@conn, :create) %>" class="btn btn-primary pull-right">Add character</a>
