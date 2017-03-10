@@ -1,6 +1,7 @@
 defmodule DbuniverseWeb.CharacterController do
     
     use DbuniverseWeb.Web, :controller
+    alias Dbuniverse.Character
 
     def show(conn, %{"id" => id}) do
 
@@ -20,15 +21,16 @@ defmodule DbuniverseWeb.CharacterController do
 
     def create(conn, _params) do
 
-        render conn, "create.html", conn: conn
+        changeset = Character.create_new_character(%Character{}, %{:name => "", :description => ""})
+        render conn, "edit.html", [changeset: changeset, options: %{}]
 
     end
 
     def add(conn, %{"character" => character}) do
 
-        IO.inspect(character)
-        c = Poison.encode! character
-        json = Dbuniverse.Repo.insert c
+        character = Map.put(character, :type, "character")
+        character = Poison.encode! character
+        json = Dbuniverse.Repo.insert character
         redirect conn, to: character_path(conn, :show, json["id"])
 
     end
@@ -36,20 +38,31 @@ defmodule DbuniverseWeb.CharacterController do
     def edit(conn, %{"id" => id}) do
 
         character = Dbuniverse.Repo.get_by_id id
-        changeset = Dbuniverse.EctoCharacter.changeset(%Dbuniverse.EctoCharacter{}, %{_id: id, _rev: character["_rev"], name: character["name"], description: character["description"], image_url: character["image_url"], category: character["category"]})
+        changeset = Character.create_new_character(
+                %Character{}, 
+                %{
+                    :name => character["name"], 
+                    :description => character["description"], 
+                    :category => character["category"],
+                    :image_url => character["image_url"]
+                }
+            )
+        
         # IO.inspect changeset
-        render conn, "edit.html", changeset: changeset
+        render conn, "edit.html", [changeset: changeset, options: %{id: id, rev: character["_rev"]}]
 
     end
 
-    def update(conn, %{"ecto_character" => character, "id" => id}) do
+    def update(conn, %{"character" => character, "id" => id, "rev" => rev}) do
         
-        # json = Poison.encode! character
-
         IO.inspect character
-        # IO.inspect json
 
-        Dbuniverse.Repo.update character, id
+        character = Map.put(character, :_rev, rev)
+        character = Map.put(character, :type, "character")
+        
+        IO.inspect character
+
+        Dbuniverse.Repo.update(Poison.encode!(character), id)
         redirect conn, to: character_path(conn, :show, id)
 
     end

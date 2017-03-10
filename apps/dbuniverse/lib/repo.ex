@@ -61,8 +61,8 @@ defmodule Dbuniverse.Repo do
 
     def update document, id do
 
-        IO.inspect Poison.encode!(document)
-        IO.inspect Writer.update @database_properties, Poison.encode!(document), id
+        IO.inspect document
+        IO.inspect Writer.update @database_properties, document, id
 
     end
 

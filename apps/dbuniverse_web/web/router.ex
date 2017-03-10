@@ -19,7 +19,7 @@ defmodule DbuniverseWeb.Router do
     get "/", PageController, :index
     get "/characters", CharacterController, :list
     get "/characters/edit/:id", CharacterController, :edit
-    post "/characters/update/:id", CharacterController, :update
+    post "/characters/update/:id/:rev", CharacterController, :update
     get "/characters/new", CharacterController, :create
     post "/characters/new", CharacterController, :add
     get "/characters/:id", CharacterController, :show

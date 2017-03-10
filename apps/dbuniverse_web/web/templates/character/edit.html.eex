@@ -1,5 +1,5 @@
 <h1>Edit character</h1>
-<%= form_for @changeset, character_path(@conn, :update, @changeset.changes._id), fn f -> %>
+<%= form_for @changeset, create_or_update_action(@conn, @options), fn f -> %>
     <div class="form-group">
         <%= label f, :name, "Nom" %>
         <%= text_input f, :name, class: "form-control" %>
@@ -15,10 +15,6 @@
     <div class="form-group">
         <%= label f, :category, "category" %>
         <%= text_input f, :category, class: "form-control" %>
-    </div>
-    <div class="form-group">
-        <%= label f, :_rev, "category" %>
-        <%= text_input f, :_rev, class: "form-control" %>
     </div>
 
     <%= submit "Add", class: "btn btn-primary pull-right" %>
