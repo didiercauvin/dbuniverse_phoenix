@@ -1,21 +1,14 @@
 <h1>Edit character</h1>
-<%= form_for @changeset, create_or_update_action(@conn, @options), fn f -> %>
-    <div class="form-group">
-        <%= label f, :name, "Nom" %>
-        <%= text_input f, :name, class: "form-control" %>
-    </div>
-    <div class="form-group">
-        <%= label f, :description, "Description" %>
-        <%= textarea f, :description, class: "form-control", rows: 5 %>
-    </div>
-    <div class="form-group">
-        <%= label f, :image_url, "Url" %>
-        <%= text_input f, :image_url, class: "form-control" %>
-    </div>
-    <div class="form-group">
-        <%= label f, :category, "category" %>
-        <%= text_input f, :category, class: "form-control" %>
-    </div>
+        
+<%= link "Back", to: character_path(@conn, :show, @options.id) %>
 
-    <%= submit "Add", class: "btn btn-primary pull-right" %>
-<% end %>
+<%= render "form.html", 
+        changeset: @changeset, 
+        action: character_path(@conn, :update, @options.id, @options.rev),
+        options: [method: :put] %>
+
+<%= link "Delete", 
+    to: character_path(@conn, :delete, @options.id, @options.rev),
+    method: :delete,
+    data: [confirm: "Are you sure?"],
+    class: "btn btn-danger pull-left" %>

@@ -1,3 +1,4 @@
 <a href="<%= character_path(@conn, :edit, @character["_id"]) %>" class="btn btn-primary pull-right">Edit</a>
 <h1><%= @character["name"] %></h1>
 <h3><%= @character["description"] %></h3>
+<%= link "Back", to: character_path(@conn, :list) %>

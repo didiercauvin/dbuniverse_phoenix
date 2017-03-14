@@ -1,13 +1,8 @@
 <h1>Add character</h1>
-<%= form_for @conn, character_path(@conn, :add), [as: :character], fn f -> %>
-    <div class="form-group">
-        <%= label f, :name, "Name" %>
-        <%= text_input f, :name, class: "form-control" %>
-    </div>
-    <div class="form-group">
-        <%= label f, :description, "Description" %>
-        <%= textarea f, :description, class: "form-control", rows: 5 %>
-    </div>
+        
+<%= link "Back", to: character_path(@conn, :list) %>
 
-    <%= submit "Add", class: "btn btn-primary pull-right" %>
-<% end %>
+<%= render "form.html", 
+        changeset: @changeset, 
+        action: character_path(@conn, :create),
+        options: [method: :post] %>

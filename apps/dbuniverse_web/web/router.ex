@@ -19,10 +19,11 @@ defmodule DbuniverseWeb.Router do
     get "/", PageController, :index
     get "/characters", CharacterController, :list
     get "/characters/edit/:id", CharacterController, :edit
-    post "/characters/update/:id/:rev", CharacterController, :update
+    put "/characters/update/:id/:rev", CharacterController, :update
     get "/characters/new", CharacterController, :create
     post "/characters/new", CharacterController, :add
     get "/characters/:id", CharacterController, :show
+    delete "/characters/delete/:id/:rev", CharacterController, :delete
   end
 
   # Other scopes may use custom stacks.
