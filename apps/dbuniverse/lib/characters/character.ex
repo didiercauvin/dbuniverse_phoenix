@@ -4,15 +4,17 @@ defmodule Dbuniverse.Character do
     import Ecto.Changeset
 
     @required_fields [:name, :description]
-    @optional_fields [:category, :image_url, :type]
+    @optional_fields [:category, :image_url_header, :image_url_tiny, :image_url, :type]
 
     schema "character" do
         
-        field :category,    :string
-        field :name,        :string
-        field :image_url,   :string
-        field :description, :string
-        field :type,        :string
+        field :category,            :string
+        field :name,                :string
+        field :image_url_header,    :string
+        field :image_url_tiny,      :string
+        field :image_url,           :string
+        field :description,         :string
+        field :type,                :string
 
         timestamps()
 

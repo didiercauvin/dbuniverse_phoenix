@@ -15,6 +15,7 @@ defmodule DbuniverseWeb.CharacterController do
     def list(conn, _params) do
 
         characters = CharacterQueries.get_all
+        IO.inspect characters
         render conn, "list.html", characters: characters
 
     end
@@ -28,9 +29,11 @@ defmodule DbuniverseWeb.CharacterController do
 
     def add(conn, %{"character" => character}) do
 
-        character = Map.put(character, :type, "character")
-        character = Poison.encode! character
-        json = CharacterQueries.insert character
+        character_encoded = character 
+                                |> Map.put(:type, "character")
+                                |> Poison.encode!
+        
+        json = CharacterQueries.insert character_encoded
         redirect conn, to: character_path(conn, :show, json["id"])
 
     end
@@ -44,6 +47,7 @@ defmodule DbuniverseWeb.CharacterController do
                     :name => character["name"], 
                     :description => character["description"], 
                     :category => character["category"],
+                    :image_url_tiny => character["image_url_tiny"],
                     :image_url => character["image_url"]
                 }
             )
@@ -57,10 +61,9 @@ defmodule DbuniverseWeb.CharacterController do
         
         IO.inspect character
 
-        character = Map.put(character, :_rev, rev)
-        character = Map.put(character, :type, "character")
-        
-        IO.inspect character
+        character = character 
+                        |> Map.put(:_rev, rev)
+                        |> Map.put(:type, "character")
 
         CharacterQueries.update(Poison.encode!(character), id)
         redirect conn, to: character_path(conn, :show, id)

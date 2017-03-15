@@ -1,10 +1,7 @@
 <a href='<%= character_path(@conn, :show, @character["_id"]) %>'>
     <div class="list-group-item">
-        <h4 class="list-group-item-heading">
-            <%= @character["name"] %>
-        </h4>
         <span>
-            <%= @character["description"] %>
+            <img src='<%= @character["image_url_tiny"] %>' width="@witdh_tiny_url" height="130" />
         </span>
     </div>
 </a>
