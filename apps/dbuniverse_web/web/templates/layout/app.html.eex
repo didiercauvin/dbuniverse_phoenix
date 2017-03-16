@@ -14,7 +14,7 @@
   <body>
     <div class="container">
       <header class="header">
-        <img src="https://static.raru.co.za/news/header/2209.jpg?v=1462784678" />
+        <img src='<%= assigns[:header_url] || "https://www.hookedgamers.com/images/2544/dragon_ball_z_ultimate_tenkaichi/header_dragon_ball_z_ultimate_tenkaichi.jpg" %>'/>
       </header>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

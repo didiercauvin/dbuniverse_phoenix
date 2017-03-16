@@ -3,42 +3,49 @@ defmodule DbuniverseWeb.CharacterController do
     use DbuniverseWeb.Web, :controller
     alias Dbuniverse.{Character, CharacterQueries}
 
-    def show(conn, %{"id" => id}) do
+    def list(conn, %{"category" => category}) do
+
+        characters = CharacterQueries.get_all category
+        
+        conn
+        |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
+        |> render("list.html", [characters: characters, category: category])
+
+    end
+
+    def show(conn, %{"id" => id, "category" => category}) do
 
         character = CharacterQueries.get_by_id id
             # |> IO.inspect()
-
-        render conn, "details.html", character: character
-
-    end
-
-    def list(conn, _params) do
-
-        characters = CharacterQueries.get_all
-        IO.inspect characters
-        render conn, "list.html", characters: characters
+        
+        conn
+        |> assign(:header_url, character["image_url_header"])
+        |> render("details.html", [character: character, category: category])
 
     end
 
-    def create(conn, _params) do
+    def create(conn, %{"category" => category}) do
 
-        changeset = Character.create_new_character(%Character{}, %{:name => "", :description => ""})
-        render conn, "create.html", [changeset: changeset, options: %{}]
+        character = Character.create_new_character(%Character{}, %{:name => "", :description => "", :category => category})
+        
+        render conn, "create.html", [changeset: character, category: category, options: %{}]
 
     end
 
     def add(conn, %{"character" => character}) do
 
-        character_encoded = character 
-                                |> Map.put(:type, "character")
-                                |> Poison.encode!
+        IO.inspect character
+
+        json = character 
+                |> Map.put(:type, "character")
+                |> Poison.encode!
+                |> CharacterQueries.insert
         
-        json = CharacterQueries.insert character_encoded
-        redirect conn, to: character_path(conn, :show, json["id"])
+        redirect conn, to: character_path(conn, :show, character["category"], json["id"])
 
     end
 
-    def edit(conn, %{"id" => id}) do
+    def edit(conn, %{"id" => id, "category" => category}) do
 
         character = CharacterQueries.get_by_id id
         changeset = Character.create_new_character(
@@ -53,11 +60,13 @@ defmodule DbuniverseWeb.CharacterController do
             )
         
         # IO.inspect changeset
-        render conn, "edit.html", [changeset: changeset, options: %{id: id, rev: character["_rev"]}]
+        conn
+        |> assign(:header_url, character["image_url_header"])
+        |> render("edit.html", [changeset: changeset, category: category, options: %{id: id, rev: character["_rev"]}])
 
     end
 
-    def update(conn, %{"character" => character, "id" => id, "rev" => rev}) do
+    def update(conn, %{"character" => character, "id" => id, "rev" => rev, "category" => category}) do
         
         IO.inspect character
 
@@ -66,14 +75,14 @@ defmodule DbuniverseWeb.CharacterController do
                         |> Map.put(:type, "character")
 
         CharacterQueries.update(Poison.encode!(character), id)
-        redirect conn, to: character_path(conn, :show, id)
+        redirect conn, to: character_path(conn, :show, category, id)
 
     end
 
-    def delete(conn, %{"id" => id, "rev" => rev}) do
+    def delete(conn, %{"id" => id, "rev" => rev, "category" => category}) do
         
         CharacterQueries.delete id, rev
-        redirect conn, to: character_path(conn, :list)
+        redirect conn, to: character_path(conn, :list, category)
 
     end
 

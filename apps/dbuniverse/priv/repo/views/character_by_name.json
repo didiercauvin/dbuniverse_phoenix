@@ -1,8 +1,0 @@
-{
-  "_id" : "_design/character",
-  "views" : {
-    "by_name" : {
-      "map" : "function (doc) { if (doc.type && doc.type === 'character') { emit(doc.name, doc); } }"
-    }
-  }
-}

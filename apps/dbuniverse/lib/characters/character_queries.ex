@@ -8,9 +8,9 @@ defmodule Dbuniverse.CharacterQueries do
         
     end
 
-    def get_all do
+    def get_all category do
 
-        Repo.get_all "character", "by_name"
+        Repo.get_all "character", "by_category_" <> category
 
     end
 

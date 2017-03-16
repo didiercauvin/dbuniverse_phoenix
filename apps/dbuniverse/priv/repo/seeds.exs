@@ -33,6 +33,18 @@ case Repo.create_database do
         })
 
         Repo.insert(Poison.encode! songoku.changes)
+        
+        vegeta = Character.create_new_character(%Character{}, %{
+            :name => "Vegeta",
+            :category => "dbz",
+            :image_url_header => "http://orig08.deviantart.net/6d7a/f/2013/252/5/8/dragon_ball___kid_goku_27_by_superjmanplay2-d6lni55.png",
+            :image_url_tiny => "http://dball.free.fr/dball/perso/perso_principaux/sangoku/gokou5.gif",
+            :image_url => "http://vignette1.wikia.nocookie.net/3__/images/8/8d/Goku2.jpg.png/revision/latest?cb=20140917091017&path-prefix=300-heroes",
+            :description => "Vegeta blabla",
+            :type => "character"
+        })
+
+        Repo.insert(Poison.encode! vegeta.changes)
 
         db_category = Poison.encode! %Category{
             name: "db",
@@ -51,8 +63,8 @@ case Repo.create_database do
         fetch_all_categories_code = File.read! "priv/repo/views/category_fetch_all.json"
         Repo.create_view "category", fetch_all_categories_code
 
-        by_name_code = File.read! "priv/repo/views/character_by_name.json"
-        Repo.create_view "character", by_name_code
+        by_category_code = File.read! "priv/repo/views/character_by_category.json"
+        Repo.create_view "character", by_category_code
 
         IO.puts "Database has been seeded successfully"
 

@@ -1,0 +1,11 @@
+{
+  "_id" : "_design/character",
+  "views" : {
+    "by_category_db" : {
+      "map" : "function (doc) { if (doc.type && doc.type === 'character' && doc.category === 'db') { emit(doc.name, doc); } }"
+    },
+    "by_category_dbz" : {
+      "map" : "function (doc) { if (doc.type && doc.type === 'character' && doc.category === 'dbz') { emit(doc.name, doc); } }"
+    }
+  }
+}

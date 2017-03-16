@@ -1,14 +1,14 @@
 <h1>Edit character</h1>
         
-<%= link "Back", to: character_path(@conn, :show, @options.id) %>
+<%= link "Back", to: character_path(@conn, :show, @category, @options.id) %>
 
 <%= render "form.html", 
         changeset: @changeset, 
-        action: character_path(@conn, :update, @options.id, @options.rev),
+        action: character_path(@conn, :update, @category, @options.id, @options.rev),
         options: [method: :put] %>
 
 <%= link "Delete", 
-    to: character_path(@conn, :delete, @options.id, @options.rev),
+    to: character_path(@conn, :delete, @category, @options.id, @options.rev),
     method: :delete,
     data: [confirm: "Are you sure?"],
     class: "btn btn-danger pull-left" %>

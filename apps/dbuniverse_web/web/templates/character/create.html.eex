@@ -1,8 +1,8 @@
 <h1>Add character</h1>
         
-<%= link "Back", to: character_path(@conn, :list) %>
+<%= link "Back", to: character_path(@conn, :list, @category) %>
 
 <%= render "form.html", 
         changeset: @changeset, 
-        action: character_path(@conn, :create),
+        action: character_path(@conn, :create, @category),
         options: [method: :post] %>
