@@ -55,6 +55,7 @@ defmodule DbuniverseWeb.CharacterController do
                     :description => character["description"], 
                     :category => character["category"],
                     :image_url_tiny => character["image_url_tiny"],
+                    :image_url_header => character["image_url_header"],
                     :image_url => character["image_url"]
                 }
             )

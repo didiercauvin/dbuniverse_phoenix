@@ -1,0 +1,5 @@
+<div class="form-group">
+    <%= label @f, :image_url, "Url" %>
+    <%= url_input @f, :image_url, class: "form-control" %>
+    <%= img_tag @f.params["image_url"] %>
+</div>

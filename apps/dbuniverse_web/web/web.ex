@@ -43,6 +43,7 @@ defmodule DbuniverseWeb.Web do
 
       import DbuniverseWeb.Router.Helpers
       import DbuniverseWeb.ErrorHelpers
+      import DbuniverseWeb.InputHelpers
       import DbuniverseWeb.Gettext
     end
   end
