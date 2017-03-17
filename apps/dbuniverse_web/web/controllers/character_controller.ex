@@ -69,14 +69,37 @@ defmodule DbuniverseWeb.CharacterController do
 
     def update(conn, %{"character" => character, "id" => id, "rev" => rev, "category" => category}) do
         
-        IO.inspect character
+        changeset = Character.create_new_character(
+                         %Character{},
+                        %{
+                                :name => character["name"], 
+                                :description => character["description"], 
+                                :category => character["category"],
+                                :image_url_tiny => character["image_url_tiny"],
+                                :image_url_header => character["image_url_header"],
+                                :image_url => character["image_url"]
+                            }
+                        )
 
-        character = character 
+        if changeset.valid? do
+            
+            character = character 
                         |> Map.put(:_rev, rev)
                         |> Map.put(:type, "character")
 
-        CharacterQueries.update(Poison.encode!(character), id)
-        redirect conn, to: character_path(conn, :show, category, id)
+            CharacterQueries.update(Poison.encode!(character), id)
+            
+            conn
+            |> put_flash(:info, "Character updated successfully.")
+            |> redirect(to: character_path(conn, :show, category, id))
+
+        else 
+        
+            render(conn, "edit.html", [changeset: changeset, category: category, options: %{id: id, rev: rev}])
+
+        end
+
+        
 
     end
 

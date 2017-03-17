@@ -3,8 +3,8 @@ defmodule Dbuniverse.Character do
     use Ecto.Schema
     import Ecto.Changeset
 
-    @required_fields [:name, :description]
-    @optional_fields [:category, :image_url_header, :image_url_tiny, :image_url, :type]
+    @required_fields [:name, :description, :category, :image_url_header, :image_url_tiny, :image_url]
+    @optional_fields [:type]
 
     schema "character" do
         
@@ -24,6 +24,7 @@ defmodule Dbuniverse.Character do
         character
         |> cast(params, @required_fields ++ @optional_fields)
         |> validate_required(@required_fields)
+        |> validate_length(:name, min: 2)
     end
 
 end
