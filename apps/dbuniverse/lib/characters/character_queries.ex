@@ -15,9 +15,10 @@ defmodule Dbuniverse.CharacterQueries do
     end
 
     def insert character do
+       
+        character
+            |> Repo.insert 
         
-        Repo.insert character
-
     end
 
     def update character, id do

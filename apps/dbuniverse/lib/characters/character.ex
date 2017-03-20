@@ -3,8 +3,8 @@ defmodule Dbuniverse.Character do
     use Ecto.Schema
     import Ecto.Changeset
 
-    @required_fields [:name, :description, :category, :image_url_header, :image_url_tiny, :image_url]
-    @optional_fields [:type]
+    @required_fields [:name, :description, :category, :image_url]
+    @optional_fields [:type, :image_url_header, :image_url_tiny, ]
 
     schema "character" do
         
@@ -15,8 +15,6 @@ defmodule Dbuniverse.Character do
         field :image_url,           :string
         field :description,         :string
         field :type,                :string
-
-        timestamps()
 
     end
 

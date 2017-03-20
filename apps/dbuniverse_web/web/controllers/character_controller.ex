@@ -26,22 +26,36 @@ defmodule DbuniverseWeb.CharacterController do
 
     def create(conn, %{"category" => category}) do
 
-        character = Character.create_new_character(%Character{}, %{:name => "", :description => "", :category => category})
+        character = Character.create_new_character(%Character{}, %{:name => "", :description => "", :category => category, :type => "character"})
         
         render conn, "create.html", [changeset: character, category: category, options: %{}]
 
     end
 
+    def create(conn, %{errors: errors, category: category}) do
+
+        IO.inspect errors
+        render conn, "create.html", [changeset: %{errors | action: :insert}, category: category, options: %{}]
+
+    end
+
     def add(conn, %{"character" => character}) do
 
-        IO.inspect character
+        # IO.inspect character
 
-        json = character 
-                |> Map.put(:type, "character")
-                |> Poison.encode!
-                |> CharacterQueries.insert
+        changeset = Character.create_new_character(%Character{}, character)
+
+        IO.inspect(changeset)
+
+        case CharacterQueries.insert changeset do           
+            {:ok, %{id: id}} -> redirect conn, to: character_path(conn, :show, character["category"], id)
+            {:errors, reasons} -> create conn, %{errors: reasons, category: character["category"]}
+        end      
+
+        # json = changeset 
+        #         |> CharacterQueries.insert
         
-        redirect conn, to: character_path(conn, :show, character["category"], json["id"])
+        # redirect conn, to: character_path(conn, :show, character["category"], json["id"])
 
     end
 
