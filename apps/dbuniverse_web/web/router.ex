@@ -17,13 +17,20 @@ defmodule DbuniverseWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/:category/characters", CharacterController, :list
-    get "/:category/characters/:id/edit", CharacterController, :edit
-    put "/:category/characters/:id/update/:rev", CharacterController, :update
-    get "/:category/characters/new", CharacterController, :create
-    post "/:category/characters/new", CharacterController, :add
-    get "/:category/characters/:id", CharacterController, :show
-    delete "/:category/characters/:id/delete/:rev", CharacterController, :delete
+    get "/:id", PageController, :show
+    
+  end
+
+  scope "/:category/characters", DbuniverseWeb do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", CharacterController, :list
+    get "/:id/edit", CharacterController, :edit
+    put "/:id/update/:rev", CharacterController, :update
+    get "/new", CharacterController, :create
+    post "/new", CharacterController, :add
+    get "/:id", CharacterController, :show
+    delete "/:id/delete/:rev", CharacterController, :delete
   end
 
   # Other scopes may use custom stacks.

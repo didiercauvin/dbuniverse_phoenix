@@ -41,13 +41,15 @@ case Repo.create_database do
         Repo.insert(vegeta)
 
         db_category = Category.changeset(%Category{}, %{
-            "name" => "db"
+            "name" => "db",
+            "image_url" => "https://static.raru.co.za/news/header/2209.jpg?v=1462784678"
         })
 
         Repo.insert db_category
 
         dbz_category = Category.changeset(%Category{}, %{
-            "name" => "dbz"
+            "name" => "dbz",
+            "image_url" => "http://images.vg247.com/current//2012/04/20120412dragonballz.jpg"
         })
 
         Repo.insert dbz_category

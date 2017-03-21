@@ -8,7 +8,7 @@ defmodule DbuniverseWeb.CharacterController do
         characters = CharacterQueries.get_all category
         
         conn
-        |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
+        |> assign(:header_url, "https://s3.amazonaws.com/99Covers-Facebook-Covers/watermark/1318.jpg")
         |> render("list.html", [characters: characters, category: category])
 
     end
@@ -57,7 +57,7 @@ defmodule DbuniverseWeb.CharacterController do
 
         conn
         |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
-        |> render "edit.html", [changeset: changeset, category: category, options: %{id: id, rev: rev}]
+        |> render("edit.html", [changeset: changeset, category: category, options: %{id: id, rev: rev}])
 
     end
 

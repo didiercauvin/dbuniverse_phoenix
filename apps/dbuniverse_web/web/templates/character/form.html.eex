@@ -17,8 +17,6 @@
     </div>
 
     <%= hidden_input f, :image_url_tiny  %>
-    <%= hidden_input f, :image_url_header  %>
-    <%= hidden_input f, :type %>
 
     <%= submit "Submit", class: "btn btn-primary pull-right" %>
 <% end %>

@@ -3,12 +3,13 @@ defmodule Dbuniverse.Category do
     use Ecto.Schema
     import Ecto.Changeset
 
-    @required_fields [:name, :type]
+    @required_fields [:name, :image_url, :type]
 
     schema "category" do
         
-        field :name, :string
-        field :type, :string
+        field :name,        :string
+        field :type,        :string
+        field :image_url,   :string
 
     end
 
