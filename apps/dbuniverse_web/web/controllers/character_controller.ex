@@ -1,7 +1,7 @@
 defmodule DbuniverseWeb.CharacterController do
     
     use DbuniverseWeb.Web, :controller
-    alias Dbuniverse.{Character, CharacterQueries}
+    alias Dbuniverse.{Character, CharacterQueries, Repo}
 
     def list(conn, %{"category" => category}) do
 
@@ -19,43 +19,45 @@ defmodule DbuniverseWeb.CharacterController do
             # |> IO.inspect()
         
         conn
-        |> assign(:header_url, character["image_url_header"])
+        |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
         |> render("details.html", [character: character, category: category])
 
     end
 
     def create(conn, %{"category" => category}) do
 
-        character = Character.create_new_character(%Character{}, %{:name => "", :description => "", :category => category, :type => "character"})
+        character = Character.create_new_character(%Character{}, %{"category" => category})
         
         render conn, "create.html", [changeset: character, category: category, options: %{}]
 
     end
 
-    def create(conn, %{errors: errors, category: category}) do
+    def create(conn, %{error: changeset, category: category}) do
 
-        IO.inspect errors
-        render conn, "create.html", [changeset: %{errors | action: :insert}, category: category, options: %{}]
+        render conn, "create.html", [changeset: changeset, category: category, options: %{}]
 
     end
 
-    def add(conn, %{"character" => character}) do
-
-        # IO.inspect character
+    def add(conn, %{"character" => character, "category" => category}) do
 
         changeset = Character.create_new_character(%Character{}, character)
 
-        IO.inspect(changeset)
+        case Repo.insert changeset do
 
-        case CharacterQueries.insert changeset do           
-            {:ok, %{id: id}} -> redirect conn, to: character_path(conn, :show, character["category"], id)
-            {:errors, reasons} -> create conn, %{errors: reasons, category: character["category"]}
+            {:ok, %{"id" => id}} -> 
+                    redirect conn, to: character_path(conn, :show, category, id)
+            {:error, reasons} -> 
+                    create conn, %{error: reasons, category: category}
+        
         end      
 
-        # json = changeset 
-        #         |> CharacterQueries.insert
-        
-        # redirect conn, to: character_path(conn, :show, character["category"], json["id"])
+    end
+
+    def edit(conn, %{error: changeset, category: category, id: id, rev: rev}) do
+
+        conn
+        |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
+        |> render "edit.html", [changeset: changeset, category: category, options: %{id: id, rev: rev}]
 
     end
 
@@ -65,61 +67,39 @@ defmodule DbuniverseWeb.CharacterController do
         changeset = Character.create_new_character(
                 %Character{}, 
                 %{
-                    :name => character["name"], 
-                    :description => character["description"], 
-                    :category => character["category"],
-                    :image_url_tiny => character["image_url_tiny"],
-                    :image_url_header => character["image_url_header"],
-                    :image_url => character["image_url"]
+                    "name" => character["name"], 
+                    "description" => character["description"], 
+                    "category" => character["category"],
+                    "image_url_tiny" => character["image_url_tiny"],
+                    "image_url" => character["image_url"]
                 }
             )
         
-        # IO.inspect changeset
         conn
-        |> assign(:header_url, character["image_url_header"])
+        |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
         |> render("edit.html", [changeset: changeset, category: category, options: %{id: id, rev: character["_rev"]}])
 
     end
 
     def update(conn, %{"character" => character, "id" => id, "rev" => rev, "category" => category}) do
         
-        changeset = Character.create_new_character(
-                         %Character{},
-                        %{
-                                :name => character["name"], 
-                                :description => character["description"], 
-                                :category => character["category"],
-                                :image_url_tiny => character["image_url_tiny"],
-                                :image_url_header => character["image_url_header"],
-                                :image_url => character["image_url"]
-                            }
-                        )
+        changeset = Character.create_new_character(%Character{}, character)
 
-        if changeset.valid? do
+        case Repo.update(changeset, id, rev) do
             
-            character = character 
-                        |> Map.put(:_rev, rev)
-                        |> Map.put(:type, "character")
-
-            CharacterQueries.update(Poison.encode!(character), id)
-            
-            conn
-            |> put_flash(:info, "Character updated successfully.")
-            |> redirect(to: character_path(conn, :show, category, id))
-
-        else 
-        
-            render(conn, "edit.html", [changeset: changeset, category: category, options: %{id: id, rev: rev}])
-
+            {:ok} ->
+                    conn
+                    |> put_flash(:info, "Character updated successfully.")
+                    |> redirect(to: character_path(conn, :show, category, id))
+            {:error, reasons} ->
+                    edit conn, %{error: reasons, category: category, id: id, rev: rev}
         end
-
-        
 
     end
 
     def delete(conn, %{"id" => id, "rev" => rev, "category" => category}) do
         
-        CharacterQueries.delete id, rev
+        Repo.delete id, rev
         redirect conn, to: character_path(conn, :list, category)
 
     end

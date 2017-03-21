@@ -14,23 +14,4 @@ defmodule Dbuniverse.CharacterQueries do
 
     end
 
-    def insert character do
-       
-        character
-            |> Repo.insert 
-        
-    end
-
-    def update character, id do
-        
-        Repo.update character, id
-
-    end
-
-    def delete id, rev do
-        
-        Repo.delete id, rev
-
-    end
-
 end

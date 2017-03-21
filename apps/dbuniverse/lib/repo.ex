@@ -55,22 +55,26 @@ defmodule Dbuniverse.Repo do
 
         if document.valid? do
             {:ok, json, _headers} = Writer.create_generate @database_properties, Poison.encode!(document.changes)
-            case Poison.Parser.parse!(json) do
-                %{"id" => id} -> {:ok, %{"id": id}}
-            end
+            {:ok, Poison.Parser.parse!(json)}
         else
-            {:errors, document}
+            {:error, %{document | action: :insert}}
         end
-
-        # {:ok, json, _headers} = Writer.create_generate @database_properties, document
-        #     Poison.Parser.parse! json
 
     end
 
-    def update document, id do
+    def update document, id, rev do
 
-        Writer.update @database_properties, document, id
+        if document.valid? do
+            changes = document.changes
+                      |> Map.put(:_rev, rev)
+                      |> Poison.encode!
 
+            {:ok, _json, _headers} = Writer.update @database_properties, changes, id
+            {:ok}
+        else
+            {:error, %{document | action: :update}}
+        end
+        
     end
 
     def get_by_id id do
