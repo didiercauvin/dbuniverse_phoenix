@@ -1,0 +1,9 @@
+<div class="list-group">
+  <%=for c <- @categories["rows"] do %>
+    <a href='<%= category_path(@conn, :show, c["value"]["name"]) %>'>
+      <span>
+        <%= c["value"]["name"] %>
+      </span>
+    </a>
+  <% end %>
+</div>

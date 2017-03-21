@@ -16,8 +16,8 @@ defmodule DbuniverseWeb.Router do
   scope "/", DbuniverseWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
-    get "/:id", PageController, :show
+    get "/", CategoryController, :list
+    get "/:id", CategoryController, :show
     
   end
 

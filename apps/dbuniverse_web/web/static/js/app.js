@@ -19,3 +19,20 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+(function() {
+    
+    var url = document.getElementById('character_image_url');
+    var imgUrl = document.getElementById('img-url');
+
+    url.onkeyup = () => {
+        console.log(imgUrl);
+        imgUrl.src = url.value;
+    };
+
+    // url.onkeyup = function() {
+    //     console.log(imgUrl);
+    //     imgUrl.src = url.value;
+    // };
+
+})();

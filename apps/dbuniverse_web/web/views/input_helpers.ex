@@ -9,13 +9,13 @@ defmodule DbuniverseWeb.InputHelpers do
         wrapper_opts = [class: "form-group"]
         label_opts = [class: "control-label"]
         input_opts = [class: "form-control"]
+        img_opts = [id: "img-url"]
 
         content_tag :div, wrapper_opts do
 
             label = label(form, field, label, label_opts)
             input = apply(Phoenix.HTML.Form, type, [form, field, input_opts])
-            IO.inspect field
-            img = img_tag(form.params["image_url"])
+            img = img_tag(form.params["image_url"], img_opts)
             
             [label, input, img]
 
