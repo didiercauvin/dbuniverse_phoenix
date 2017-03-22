@@ -8,4 +8,10 @@ defmodule Dbuniverse.CategoryQueries do
 
     end
 
+    def get_by_name name do
+        
+        Repo.get_by_key "category", "get_by_name", name
+
+    end
+
 end

@@ -1,14 +1,15 @@
 defmodule DbuniverseWeb.CharacterController do
     
     use DbuniverseWeb.Web, :controller
-    alias Dbuniverse.{Character, CharacterQueries, Repo}
+    alias Dbuniverse.{Character, CharacterQueries, CategoryQueries, Repo}
 
     def list(conn, %{"category" => category}) do
 
         characters = CharacterQueries.get_all category
-        
+        cat = category |> CategoryQueries.get_by_name
+
         conn
-        |> assign(:header_url, "https://s3.amazonaws.com/99Covers-Facebook-Covers/watermark/1318.jpg")
+        |> assign(:header_url, cat["value"]["image_url"])
         |> render("list.html", [characters: characters, category: category])
 
     end
@@ -92,7 +93,7 @@ defmodule DbuniverseWeb.CharacterController do
                     |> redirect(to: character_path(conn, :show, category, id))
             {:error, reasons} ->
                     edit conn, %{error: reasons, category: category, id: id, rev: rev}
-                    
+
         end
 
     end

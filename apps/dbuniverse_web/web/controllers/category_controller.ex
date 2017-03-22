@@ -11,10 +11,4 @@ defmodule DbuniverseWeb.CategoryController do
   
   end
 
-  def show(conn, %{"id" => id}) do
-    
-     character_path(conn, :show, %{"category" => id})
-
-  end
-
 end

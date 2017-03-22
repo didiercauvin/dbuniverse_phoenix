@@ -91,6 +91,21 @@ defmodule Dbuniverse.Repo do
 
     end
 
+    def get_by_key view, filter, key do
+        
+        {:ok, json} = View.document_by_key @database_properties, %{design: view, view: filter, key: key}
+
+        %{"rows" => rows} = Poison.Parser.parse!(json)
+
+        case rows do
+            
+            [] -> {:noresult}
+            _ -> hd(rows)
+
+        end
+
+    end
+
     def create_view design_name, code do
 
         View.create_view @database_properties, design_name, code
