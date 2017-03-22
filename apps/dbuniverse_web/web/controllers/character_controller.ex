@@ -16,7 +16,6 @@ defmodule DbuniverseWeb.CharacterController do
     def show(conn, %{"id" => id, "category" => category}) do
 
         character = CharacterQueries.get_by_id id
-            # |> IO.inspect()
         
         conn
         |> assign(:header_url, "https://static.raru.co.za/news/header/2209.jpg?v=1462784678")
@@ -93,6 +92,7 @@ defmodule DbuniverseWeb.CharacterController do
                     |> redirect(to: character_path(conn, :show, category, id))
             {:error, reasons} ->
                     edit conn, %{error: reasons, category: category, id: id, rev: rev}
+                    
         end
 
     end

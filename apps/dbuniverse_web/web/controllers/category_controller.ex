@@ -2,6 +2,7 @@ defmodule DbuniverseWeb.CategoryController do
   use DbuniverseWeb.Web, :controller
 
   alias Dbuniverse.CategoryQueries
+  alias DbuniverseWeb.CharacterController
 
   def list(conn, _params) do
 
@@ -12,7 +13,7 @@ defmodule DbuniverseWeb.CategoryController do
 
   def show(conn, %{"id" => id}) do
     
-    # render conn, 
+     character_path(conn, :show, %{"category" => id})
 
   end
 
